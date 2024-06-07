@@ -5,7 +5,7 @@ const upload = require('../cloudinary/multer');
 
 // Definimos las rutas y conectamos con los controsladores
 router.get('/user', UserController.getUser);
-router.post('/user', UserController.createUser);
+router.post('/user/register', UserController.createUser);
 router.get('/user/:id', UserController.getUserById);
 
 module.exports = router;
