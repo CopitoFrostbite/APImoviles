@@ -17,6 +17,7 @@ app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: '/uploads/'
 }))
+
 app.use('/api', UserRoutes); // Usamos las rutas definidas
 
 app.listen(port, ()=> console.log(`comenzando ${port}`));

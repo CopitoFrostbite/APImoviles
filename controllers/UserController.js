@@ -14,8 +14,8 @@ const getUser = async (req, res) => {
       if (!email || !password || !username || !name || !lastname) {
         return res.status(400).json({ message: 'Faltan datos requeridos' });
     }
-      if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path);
+      if (req.files?.File) {
+        const result = await uploadImage(req.files.File.tempFilePath);
         const newUser = new User({
           username: username,
           name: name,
