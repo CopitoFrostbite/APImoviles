@@ -63,10 +63,51 @@ const getUser = async (req, res) => {
     }
   };
 
+  const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // Verificar que todos los datos requeridos están presentes
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Faltan datos requeridos' });
+      }
+  
+      // Buscar el usuario en la base de datos
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
+      }
+  
+      // Verificar la contraseña sin bcrypt
+      if (user.password !== password) {
+        return res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
+      }
+  
+      // Transformar el objeto de usuario
+      const transformedUser = {
+        userId: user._id.toString(),
+        username: user.username,
+        name: user.name,
+        lastname: user.lastname,
+        email: user.email,
+        profilePicture: user.avatar.url_image
+      };
+  
+      // Devolver una respuesta adecuada
+      res.status(200).json(transformedUser);
+      console.log("Response Object:", { message: 'Inicio de sesión exitoso', user: transformedUser });
+  
+    } catch (error) {
+      console.error("Error durante el inicio de sesión:", error);
+      res.status(500).json({ message: 'Error al intentar iniciar sesión', error: error });
+    }
+  };
+  
+
   const getUserById = async (req, res) => {
     console.log('Function: getProductById');
     res.send('getProductById');
   };
   
-  module.exports = { getUser, createUser, getUserById };
+  module.exports = { getUser,loginUser, createUser, getUserById };
   
