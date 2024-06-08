@@ -1,11 +1,12 @@
 const cloudinary = require('cloudinary').v2;
+require('dotenv').config(); // Cargar variables de entorno
 
 cloudinary.config({
-    cloud_name : 'dviqzyd9q',
-    api_key: '227196671689717',
-    api_secret :'QmvQ9APUSbGAZwobCjnk3Akb_9g',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true
-})
+});
 
 module.exports = async function uploadImage(filePath){
     return await cloudinary.uploader.upload(filePath, {folder : 'replit'})

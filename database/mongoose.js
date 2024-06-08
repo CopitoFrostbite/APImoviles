@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
+require('dotenv').config(); 
 
 const connectDB = async () => {
   try {
-    const mongoURI = 'mongodb+srv://admin:kVmimSZ1CqrzspAq@poi.kmcyt8q.mongodb.net/Moviles?retryWrites=true&w=majority&appName=poi';
+    const mongoURI = process.env.MONGO_URI;
 
-
-    await mongoose.connect(mongoURI);
+    await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('Conectado a MongoDB');
   } catch (err) {
     console.error('Error al conectarse a MongoDB:', err);
