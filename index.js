@@ -3,7 +3,7 @@ const connectDB = require('./database/mongoose');
 const UserRoutes = require('./routes/UserRoutes');
 const JournalRoutes = require('./routes/JournalRoutes');
 const fileUpload = require('express-fileupload')
-const port = process.env.PORT || 10000;
+const port = process.env.PORT || 4000;
 
 const app = express();
 app.get('/', (req, res) => {
