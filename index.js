@@ -23,3 +23,7 @@ app.use('/api', UserRoutes); // Usamos las rutas definidas
 app.use('/api', JournalRoutes); // Usamos las rutas definidas
 
 app.listen(port, ()=> console.log(`comenzando ${port}`));
+
+
+// Este es un commit
+// Un cambio en el archivo index.js
