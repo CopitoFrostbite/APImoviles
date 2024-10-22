@@ -60,7 +60,8 @@ const getJournalsByUserId = async (req, res) => {
         entryId: entryId,
         userId: userId,
         title: title,
-        content: content
+        content: content,
+        isEdited: 0,
       });
   
       // Guardar el nuevo usuario en la base de datos
@@ -75,7 +76,7 @@ const getJournalsByUserId = async (req, res) => {
   };
 
   const updateJournal = async (req, res) => {
-    const { userId, entryId, title, content } = req.body;
+    const { userId, entryId, title, content, isEdited } = req.body;
   
     try {
       // Verificar que los datos requeridos están presentes

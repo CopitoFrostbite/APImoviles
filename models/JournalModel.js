@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const journalSchema = new mongoose.Schema({
-  entryId: {
-    type: Number,
-    required: true
-  },
-  userId: {
+   userId: {
     type: String,
     required: true
   },
