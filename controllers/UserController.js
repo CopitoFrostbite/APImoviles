@@ -1,6 +1,6 @@
 const { request } = require('express');
 const User = require('../models/UserModel');
-const uploadImage = require('../cloudinary/cloudinary')
+
 
 const getUser = async (req, res) => {
     console.log('Function: getAllUsers');
@@ -23,10 +23,7 @@ const getUser = async (req, res) => {
         return res.status(400).json({ message: 'No se subió ningún archivo' });
       }
   
-      // Subir imagen a Cloudinary
-      console.log("Intentando subir la imagen a Cloudinary..."); 
-      const result = await uploadImage(avatar.path);
-      console.log("Imagen subida correctamente:", result);
+      
   
       const newUser = new User({
         username,
