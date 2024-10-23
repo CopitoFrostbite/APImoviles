@@ -3,8 +3,8 @@ const User = require('../models/UserModel');
 const uploadImage = require('../cloudinary/cloudinary')
 
 const getUser = async (req, res) => {
-    console.log('Function: getAllProducts');
-    res.send('getAllProducts');
+    console.log('Function: getAllUsers');
+    res.send('getAllUsers');
   };
   
   
@@ -16,6 +16,7 @@ const getUser = async (req, res) => {
       if (!email || !password || !username || !name || !lastname) {
         return res.status(400).json({ message: 'Faltan datos requeridos' });
       }
+      const avatar = req.file;
   
       // Verificar si se subió un archivo
       if (!req.files || !req.files.avatar) {
@@ -23,7 +24,7 @@ const getUser = async (req, res) => {
       }
   
       // Obtener el archivo
-      const avatar = req.files.avatar;
+      //const avatar = req.files.avatar;
   
       // Subir la imagen (aquí debes reemplazar 'uploadImage' con tu propia lógica de subida)
       const result = await uploadImage(avatar.tempFilePath);
@@ -61,7 +62,9 @@ const getUser = async (req, res) => {
       res.status(500).json({ 
         message: 'Error al intentar crear el usuario', 
         error: error.message || 'Error desconocido' 
+        
       });
+      console.log("Response Object:", error.message);
       
     }
   };

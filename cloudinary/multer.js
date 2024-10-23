@@ -6,7 +6,10 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'avatars',
-    format: async (req, file) => file.mimetype.split('/')[1], // You can specify the format here
+    format: async (req, file) => {
+      const format = file.mimetype ? file.mimetype.split('/')[1] : 'jpg'; // Por defecto a jpg si no se encuentra el MIME
+      return format;
+    }, 
     public_id: (req, file) => file.originalname,
   },
 });
