@@ -58,7 +58,10 @@ const getUser = async (req, res) => {
       console.log("Response Object:", response);
     } catch (error) {
       console.error("Error al crear el usuario:", error);
-      res.status(500).json({ message: 'Error al intentar crear el usuario', error: error });
+      res.status(500).json({ 
+        message: 'Error al intentar crear el usuario', 
+        error: error.message || 'Error desconocido' 
+      });
       
     }
   };
