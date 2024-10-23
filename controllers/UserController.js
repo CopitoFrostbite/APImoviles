@@ -15,7 +15,7 @@ const getUser = async (req, res) => {
       if (!email || !password || !username || !name || !lastname) {
         return res.status(400).json({ message: 'Faltan datos requeridos' });
       }
-  
+      console.log("Iniciando creación de usuario...");
       const avatar = req.file;
       console.log("Archivo recibido:", avatar); // Verifica si se recibe el archivo
   
