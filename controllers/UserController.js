@@ -10,24 +10,23 @@ const getUser = async (req, res) => {
   
   const createUser = async (req, res) => {
     const { username, name, lastname, email, password } = req.body;
-    
+  
     try {
       // Verificar que todos los datos requeridos están presentes
       if (!email || !password || !username || !name || !lastname) {
         return res.status(400).json({ message: 'Faltan datos requeridos' });
       }
+  
+      // El archivo está disponible en req.file, ya que usas multer
       const avatar = req.file;
   
       // Verificar si se subió un archivo
-      if (!req.files || !req.files.avatar) {
+      if (!avatar) {
         return res.status(400).json({ message: 'No se subió ningún archivo' });
       }
   
-      // Obtener el archivo
-      //const avatar = req.files.avatar;
-  
-      // Subir la imagen (aquí debes reemplazar 'uploadImage' con tu propia lógica de subida)
-      const result = await uploadImage(avatar.tempFilePath);
+      // Subir la imagen a Cloudinary
+      const result = await uploadImage(avatar.path);
   
       // Crear un nuevo usuario
       const newUser = new User({
@@ -44,28 +43,21 @@ const getUser = async (req, res) => {
   
       // Guardar el nuevo usuario en la base de datos
       await newUser.save();
-
+  
+      // Devolver una respuesta adecuada
       const transformedUser = {
         userId: newUser._id,
         username: newUser.username,
         name: newUser.name,
         lastname: newUser.lastname,
         email: newUser.email,
-        password: newUser.password,
         profilePicture: newUser.avatar.url_image
       };
-      const response = { message: 'Usuario creado con éxito', user: transformedUser };
-      res.status(201).json(response);
-      console.log("Response Object:", response);
+      res.status(201).json({ message: 'Usuario creado con éxito', user: transformedUser });
+      
     } catch (error) {
       console.error("Error al crear el usuario:", error);
-      res.status(500).json({ 
-        message: 'Error al intentar crear el usuario', 
-        error: error.message || 'Error desconocido' 
-        
-      });
-      console.log("Response Object:", error.message);
-      
+      res.status(500).json({ message: 'Error al intentar crear el usuario', error: error.message });
     }
   };
 
