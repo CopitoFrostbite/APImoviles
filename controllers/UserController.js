@@ -23,8 +23,7 @@ const getUser = async (req, res) => {
         return res.status(400).json({ message: 'No se subió ningún archivo' });
       }
   
-      
-  
+      // Los detalles de la imagen subida están disponibles en req.file
       const newUser = new User({
         username,
         name,
@@ -32,13 +31,15 @@ const getUser = async (req, res) => {
         email,
         password,
         avatar: {
-          public_id: result.public_id,
-          url_image: result.secure_url
+          public_id: avatar.filename,  // Este es el public_id generado por Cloudinary
+          url_image: avatar.path       // Esta es la URL de la imagen subida
         }
       });
   
+      // Guardar el nuevo usuario en la base de datos
       await newUser.save();
   
+      // Preparar la respuesta transformada
       const transformedUser = {
         userId: newUser._id,
         username: newUser.username,
@@ -47,6 +48,7 @@ const getUser = async (req, res) => {
         email: newUser.email,
         profilePicture: newUser.avatar.url_image
       };
+  
       res.status(201).json({ message: 'Usuario creado con éxito', user: transformedUser });
     } catch (error) {
       console.error("Error al crear el usuario:", error); // Log más detallado del error
