@@ -8,9 +8,9 @@ cloudinary.config({
     secure: true
 });
 
-module.exports = async function uploadImage(filePath) {
+module.exports = async function uploadImage(Path) {
     try {
-        const result = await cloudinary.uploader.upload(filePath, { folder: 'replit' });
+        const result = await cloudinary.uploader.upload(Path, { folder: 'replit' });
         console.log('Imagen subida correctamente:', result);
         return result;
     } catch (error) {

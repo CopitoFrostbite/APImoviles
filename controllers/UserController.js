@@ -12,39 +12,36 @@ const getUser = async (req, res) => {
     const { username, name, lastname, email, password } = req.body;
   
     try {
-      // Verificar que todos los datos requeridos están presentes
       if (!email || !password || !username || !name || !lastname) {
         return res.status(400).json({ message: 'Faltan datos requeridos' });
       }
   
-      // El archivo está disponible en req.file, ya que usas multer
       const avatar = req.file;
+      console.log("Archivo recibido:", avatar); // Verifica si se recibe el archivo
   
-      // Verificar si se subió un archivo
       if (!avatar) {
         return res.status(400).json({ message: 'No se subió ningún archivo' });
       }
   
-      // Subir la imagen a Cloudinary
+      // Subir imagen a Cloudinary
+      console.log("Intentando subir la imagen a Cloudinary..."); 
       const result = await uploadImage(avatar.path);
+      console.log("Imagen subida correctamente:", result);
   
-      // Crear un nuevo usuario
       const newUser = new User({
-        username: username,
-        name: name,
-        lastname: lastname,
-        email: email,
-        password: password,
+        username,
+        name,
+        lastname,
+        email,
+        password,
         avatar: {
           public_id: result.public_id,
           url_image: result.secure_url
         }
       });
   
-      // Guardar el nuevo usuario en la base de datos
       await newUser.save();
   
-      // Devolver una respuesta adecuada
       const transformedUser = {
         userId: newUser._id,
         username: newUser.username,
@@ -54,9 +51,8 @@ const getUser = async (req, res) => {
         profilePicture: newUser.avatar.url_image
       };
       res.status(201).json({ message: 'Usuario creado con éxito', user: transformedUser });
-      
     } catch (error) {
-      console.error("Error al crear el usuario:", error);
+      console.error("Error al crear el usuario:", error); // Log más detallado del error
       res.status(500).json({ message: 'Error al intentar crear el usuario', error: error.message });
     }
   };
