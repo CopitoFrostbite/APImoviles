@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 const journalSchema = new mongoose.Schema({
-   userId: {
+   journalId: {
     type: String,
     required: true
+  },
+  userId: {
+    type: String,
+    required: false
   },
   title: {
     type: String,
@@ -13,6 +17,10 @@ const journalSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  mood: {
+    type: Int,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now
@@ -20,6 +28,10 @@ const journalSchema = new mongoose.Schema({
   isEdited: {
     type: Boolean,
     default: false
+  },
+  isDraft: {
+    type: Boolean,
+    default: true
   }
 });
 

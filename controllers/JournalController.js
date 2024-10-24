@@ -46,34 +46,50 @@ const getJournalsByUserId = async (req, res) => {
   }
 };
   
-  const createJournal = async (req, res) => {
-    const { entryId, userId, title, content} = req.body;
-    
-    try {
-      // Verificar que todos los datos requeridos están presentes
-      if (!entryId || !userId || !title || !content) {
-        return res.status(400).json({ message: 'Faltan datos requeridos' });
+const createJournal = async (req, res) => {
+  const { journalId, userId, title, content, mood, date } = req.body;
+
+  try {
+      // Verificar que los datos requeridos estén presentes
+      if ( !journalId || !userId || !title || !content || !mood || !date) {
+          return res.status(400).json({ message: 'Faltan datos requeridos' });
       }
 
-      // Crear un nuevo Journal
+      console.log("Iniciando creación de Journal...");
+
+      // Crear un nuevo journal
       const newJournal = new Journal({
-        entryId: entryId,
-        userId: userId,
-        title: title,
-        content: content,
-        isEdited: 0,
+          journalId,
+          userId,
+          title,
+          content,
+          mood,
+          date,
+          isEdited: false,
+          isDraft: false  // Asumimos que es un journal completo y no un borrador
       });
-  
-      // Guardar el nuevo usuario en la base de datos
+
+      // Guardar el nuevo journal en la base de datos
       await newJournal.save();
 
-      res.status(201).json(newJournal);
-    } catch (error) {
-      console.error("Error al crear el Journal:", error);
-      res.status(500).json({ message: 'Error al intentar crear el Journal', error: error });
-      
-    }
-  };
+      // Preparar la respuesta transformada
+      const transformedJournal = {
+          journalId: newJournal.journalId,
+          userId: newJournal.userId,
+          title: newJournal.title,
+          content: newJournal.content,
+          mood: newJournal.mood,
+          date: newJournal.date,
+          isEdited: newJournal.isEdited,
+          isDraft: newJournal.isDraft
+      };
+
+      res.status(201).json({ message: 'Journal creado con éxito', journal: transformedJournal });
+  } catch (error) {
+      console.error("Error al crear el journal:", error); // Log más detallado del error
+      res.status(500).json({ message: 'Error al intentar crear el journal', error: error.message });
+  }
+};
 
   const updateJournal = async (req, res) => {
     const { userId, entryId, title, content, isEdited } = req.body;
