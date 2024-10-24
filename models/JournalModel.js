@@ -18,7 +18,7 @@ const journalSchema = new mongoose.Schema({
     required: true
   },
   mood: {
-    type: Int,
+    type: Number,
     required: true
   },
   date: {
