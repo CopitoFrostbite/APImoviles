@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
 connectDB();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api', UserRoutes); // Usamos las rutas definidas
