@@ -47,6 +47,7 @@ const getJournalsByUserId = async (req, res) => {
 };
   
 const createJournal = async (req, res) => {
+  console.log("Datos recibidos:", req.body);
   const { journalId, userId, title, content, mood, date } = req.body;
 
   try {
