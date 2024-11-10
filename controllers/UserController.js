@@ -95,6 +95,80 @@ const getUser = async (req, res) => {
       res.status(500).json({ message: 'Error al intentar iniciar sesión', error: error });
     }
   };
+
+  const updateUserData = async (req, res) => {
+    const { id } = req.params;
+    const { username, name, lastname, password } = req.body;
+  
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+  
+      // Actualizar los datos del usuario
+      user.username = username || user.username;
+      user.name = name || user.name;
+      user.lastname = lastname || user.lastname;
+      if (password) user.password = password;
+  
+      await user.save();
+  
+      // Estructura de respuesta para actualizar la base de datos local
+      const updatedUser = {
+        userId: user._id.toString(),
+        username: user.username,
+        name: user.name,
+        lastname: user.lastname,
+        email: user.email,
+        profilePicture: user.avatar?.url_image
+      };
+  
+      res.status(200).json({ message: 'Datos del usuario actualizados con éxito', user: updatedUser });
+    } catch (error) {
+      console.error("Error al actualizar datos del usuario:", error);
+      res.status(500).json({ message: 'Error al actualizar datos del usuario', error: error.message });
+    }
+  };
+  
+  const updateProfileImage = async (req, res) => {
+    const { id } = req.params;
+    const avatar = req.file;
+  
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+  
+      if (!avatar) {
+        return res.status(400).json({ message: 'No se subió ninguna imagen' });
+      }
+  
+      // Actualizar la imagen de perfil
+      user.avatar = {
+        public_id: avatar.filename,
+        url_image: avatar.path
+      };
+  
+      await user.save();
+  
+      // Estructura de respuesta para actualizar la base de datos local
+      const updatedUser = {
+        userId: user._id.toString(),
+        username: user.username,
+        name: user.name,
+        lastname: user.lastname,
+        email: user.email,
+        profilePicture: user.avatar.url_image
+      };
+  
+      res.status(200).json({ message: 'Imagen de perfil actualizada con éxito', user: updatedUser });
+    } catch (error) {
+      console.error("Error al actualizar imagen de perfil:", error);
+      res.status(500).json({ message: 'Error al actualizar imagen de perfil', error: error.message });
+    }
+  };
   
 
   const getUserById = async (req, res) => {
@@ -102,5 +176,12 @@ const getUser = async (req, res) => {
     res.send('getProductById');
   };
   
-  module.exports = { getUser,loginUser, createUser, getUserById };
+  module.exports = {
+    getUser,
+    loginUser,
+    createUser,
+    getUserById,
+    updateUserData,
+    updateProfileImage
+  };
   
