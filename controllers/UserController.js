@@ -124,6 +124,9 @@ const getUser = async (req, res) => {
         profilePicture: user.avatar?.url_image
       };
   
+      // Log para visibilidad de la respuesta
+      console.log("Datos de usuario actualizados, respuesta API:", updatedUser);
+  
       res.status(200).json({ message: 'Datos del usuario actualizados con éxito', user: updatedUser });
     } catch (error) {
       console.error("Error al actualizar datos del usuario:", error);
@@ -162,6 +165,9 @@ const getUser = async (req, res) => {
         email: user.email,
         profilePicture: user.avatar.url_image
       };
+  
+      // Log para visibilidad de la respuesta
+      console.log("Imagen de perfil actualizada, respuesta API:", updatedUser);
   
       res.status(200).json({ message: 'Imagen de perfil actualizada con éxito', user: updatedUser });
     } catch (error) {
