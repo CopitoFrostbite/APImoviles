@@ -127,7 +127,7 @@ const getUser = async (req, res) => {
       // Log para visibilidad de la respuesta
       console.log("Datos de usuario actualizados, respuesta API:", updatedUser);
   
-      res.status(200).json({ message: 'Datos del usuario actualizados con éxito', user: updatedUser });
+      res.status(200).json(updatedUser);
     } catch (error) {
       console.error("Error al actualizar datos del usuario:", error);
       res.status(500).json({ message: 'Error al actualizar datos del usuario', error: error.message });
@@ -169,7 +169,7 @@ const getUser = async (req, res) => {
       // Log para visibilidad de la respuesta
       console.log("Imagen de perfil actualizada, respuesta API:", updatedUser);
   
-      res.status(200).json({ message: 'Imagen de perfil actualizada con éxito', user: updatedUser });
+      res.status(200).json(updatedUser);
     } catch (error) {
       console.error("Error al actualizar imagen de perfil:", error);
       res.status(500).json({ message: 'Error al actualizar imagen de perfil', error: error.message });
