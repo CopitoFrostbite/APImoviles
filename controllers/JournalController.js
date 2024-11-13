@@ -27,17 +27,18 @@ const deleteJournal = async (req, res) => {
 };
 
 const getJournalsByUserId = async (req, res) => {
-  const { userId } = req.body;
-  
+  // Obtener el userId desde los parámetros de la ruta
+  const { id } = req.params;  // Cambio de req.body a req.params
+
   try {
     // Buscar journals que correspondan al userId especificado
-    const journals = await Journal.find({ userId: userId });
-    
+    const journals = await Journal.find({ userId: id });
+
     // Verificar si se encontraron journals para el usuario
     if (!journals || journals.length === 0) {
       return res.status(404).json({ message: 'No se encontraron journals para el usuario especificado' });
     }
-    
+
     // Si se encontraron journals, enviarlos como respuesta
     res.status(200).json(journals);
   } catch (error) {
