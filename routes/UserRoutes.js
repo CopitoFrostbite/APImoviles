@@ -10,7 +10,7 @@ router.post('/user/register', upload.single('avatar'), (req, res, next) => {
     next();
   }, UserController.createUser);
 router.post('/user/login', UserController.loginUser);
-
+router.put('/user/:userId/mark_deleted', UserController.markUserAsDeleted);
 router.put('/user/:id', UserController.updateUserData);
 router.put('/user/:id/profile_picture', upload.single('avatar'), (req, res, next) => {
   console.log("Middleware de multer ejecutado para actualizar imagen, archivo recibido:", req.file);
