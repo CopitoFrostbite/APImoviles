@@ -16,8 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use('/api', UserRoutes); // Usamos las rutas definidas
-app.use('/api', JournalRoutes); // Usamos las rutas definidas
+app.use('/api', UserRoutes); 
+app.use('/api', JournalRoutes); 
 
 app.listen(port, ()=> console.log(`comenzando ${port}`));
 

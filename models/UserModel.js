@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isDeleted: {   
+    type: Boolean,
+    default: false
+  },
   avatar: {
     public_id: { type: String, required: true },
     url_image: { type: String, required: true }

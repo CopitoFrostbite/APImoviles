@@ -17,13 +17,13 @@ const getUser = async (req, res) => {
       }
       console.log("Iniciando creación de usuario...");
       const avatar = req.file;
-      console.log("Archivo recibido:", avatar); // Verifica si se recibe el archivo
+      console.log("Archivo recibido:", avatar); 
   
       if (!avatar) {
         return res.status(400).json({ message: 'No se subió ningún archivo' });
       }
   
-      // Los detalles de la imagen subida están disponibles en req.file
+      
       const newUser = new User({
         username,
         name,
@@ -51,7 +51,7 @@ const getUser = async (req, res) => {
   
       res.status(201).json({ message: 'Usuario creado con éxito', user: transformedUser });
     } catch (error) {
-      console.error("Error al crear el usuario:", error); // Log más detallado del error
+      console.error("Error al crear el usuario:", error); 
       res.status(500).json({ message: 'Error al intentar crear el usuario', error: error.message });
     }
   };
@@ -71,7 +71,7 @@ const getUser = async (req, res) => {
         return res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
       }
   
-      // Verificar la contraseña sin bcrypt
+     
       if (user.password !== password) {
         return res.status(401).json({ message: 'Correo electrónico o contraseña incorrectos' });
       }
@@ -177,16 +177,11 @@ const getUser = async (req, res) => {
   };
   
 
-  const getUserById = async (req, res) => {
-    console.log('Function: getProductById');
-    res.send('getProductById');
-  };
   
   module.exports = {
     getUser,
     loginUser,
-    createUser,
-    getUserById,
+    createUser,    
     updateUserData,
     updateProfileImage
   };

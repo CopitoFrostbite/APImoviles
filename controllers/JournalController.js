@@ -4,30 +4,30 @@ const uploadImage = require('../cloudinary/cloudinary');
 
 // Eliminación lógica del Journal
 const deleteJournal = async (req, res) => {
-  const { userId, entryId } = req.body;
+  const { entryId } = req.params;
 
   try {
-    // Verificar que los datos requeridos están presentes
-    if (!userId || !entryId) {
+    // Verificar que el entryId está presente
+    if (!entryId) {
       return res.status(400).json({ message: 'Faltan datos requeridos' });
     }
 
-    // Buscar y actualizar el journal que coincide con el userId y entryId para marcarlo como eliminado
+    // Buscar y actualizar el journal que coincide con el entryId para marcarlo como eliminado
     const journal = await Journal.findOneAndUpdate(
-      { userId: userId, entryId: entryId },
+      { entryId: entryId },
       { isDeleted: true },
       { new: true } // Devuelve el documento actualizado
     );
 
     // Verificar si se encontró y actualizó el journal
     if (!journal) {
-      return res.status(404).json({ message: 'Journal no encontrado o no autorizado' });
+      return res.status(404).json({ message: 'Journal no encontrado' });
     }
 
-    res.status(200).json({ message: 'Journal eliminado correctamente (eliminación lógica)' });
+    res.status(200).json({ message: 'Journal eliminado correctamente (eliminación lógica)', journal });
   } catch (error) {
     console.error("Error al eliminar el Journal:", error);
-    res.status(500).json({ message: 'Error al intentar eliminar el Journal', error: error });
+    res.status(500).json({ message: 'Error al intentar eliminar el Journal', error: error.message });
   }
 };
 

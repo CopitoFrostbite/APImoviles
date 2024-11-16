@@ -21,6 +21,10 @@ const imageSchema = new mongoose.Schema({
   dateAdded: {
     type: Date,
     default: Date.now
+  },
+  isDeleted: {   
+    type: Boolean,
+    default: false
   }
 });
 
