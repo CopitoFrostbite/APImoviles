@@ -191,8 +191,7 @@ const User = require('../models/UserModel');
   
 
   
-  module.exports = {
-    getUser,
+  module.exports = {    
     loginUser,
     createUser,    
     updateUserData,
