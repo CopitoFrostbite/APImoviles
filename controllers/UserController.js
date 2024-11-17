@@ -111,7 +111,7 @@ const User = require('../models/UserModel');
 
   const updateUserData = async (req, res) => {
     const { id } = req.params;
-    const { username, name, lastname, password } = req.body;
+    const { username, name, lastname } = req.body;
   
     try {
       const user = await User.findById(id);
@@ -123,7 +123,7 @@ const User = require('../models/UserModel');
       user.username = username || user.username;
       user.name = name || user.name;
       user.lastname = lastname || user.lastname;
-      if (password) user.password = password;
+      
   
       await user.save();
   
