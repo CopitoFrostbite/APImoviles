@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({
   imageId: { type: String, required: true, unique: true }, 
-  journalId: { type: String },
+  journalId: { type: String, required: true },
   filePath: { type: String, required: true }, 
   cloudUrl: { type: String, default: null }, 
   dateAdded: { type: Date, default: Date.now }, 

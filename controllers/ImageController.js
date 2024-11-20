@@ -4,7 +4,7 @@ const uploadImage = require('../cloudinary/cloudinary');
 
 const addImageToEntry = async (req, res) => {
 
-  const { imageId, filePath, dateAdded, syncDate,entryId } = req.body; // Datos adicionales del cliente
+  const { imageId, filePath, dateAdded, syncDate,entryId } = req.body; 
   const imageFile = req.file; // Archivo de la imagen subido
 
   try {
@@ -30,7 +30,7 @@ const addImageToEntry = async (req, res) => {
       await newImage.save();
 
       // Responder con el objeto de la imagen recién creada
-      res.status(201).json(newImage);
+      res.status(201).json({ message: 'Imágenes subidas exitosamente' });
   } catch (error) {
       console.error('Error al agregar imagen a la entrada:', error);
       res.status(500).json({ message: 'Error al agregar imagen', error: error.message });

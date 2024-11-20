@@ -80,7 +80,7 @@ const User = require('../models/UserModel');
         profilePicture: user.avatar.url_image
       };
   
-      // Devolver una respuesta adecuada
+      // Devolver una respuesta
       res.status(200).json(transformedUser);
       console.log("Response Object:", { message: 'Inicio de sesión exitoso', user: transformedUser });
   

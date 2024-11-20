@@ -69,7 +69,7 @@ const createJournal = async (req, res) => {
       date,
       isEdited: false,
       isDraft: false,
-      isDeleted: false // Inicializar con isDeleted en false
+      isDeleted: false 
     });
 
     await newJournal.save();
