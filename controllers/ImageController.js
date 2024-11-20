@@ -65,6 +65,28 @@ const addImageToEntry = async (req, res) => {
     }
   };
 
+  const markImageAsDeleted = async (req, res) => {
+    const { imageId } = req.params;
+
+    try {
+        // Buscar la imagen en la base de datos
+        const image = await Image.findOne({ 'image.public_id': imageId });
+
+        if (!image) {
+            return res.status(404).json({ message: 'Imagen no encontrada' });
+        }
+
+        // Actualizar el campo `isDeleted` a `true`
+        image.isDeleted = true;
+        await image.save();
+
+        res.status(200).json({ message: 'Imagen marcada como eliminada', image });
+    } catch (error) {
+        console.error('Error al marcar imagen como eliminada:', error);
+        res.status(500).json({ message: 'Error al marcar imagen como eliminada', error: error.message });
+    }
+};
+
   const deleteImage = async (req, res) => {
     const { imageId } = req.params; // ID único de la imagen generado por Cloudinary
 
@@ -93,5 +115,6 @@ const addImageToEntry = async (req, res) => {
   module.exports = {
     addImageToEntry,
     uploadJournalImages,
-    deleteImage
+    deleteImage,
+    markImageAsDeleted
   };
