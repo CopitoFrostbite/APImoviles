@@ -3,8 +3,8 @@ const Image = require('../models/ImageModel');
 const uploadImage = require('../cloudinary/cloudinary');
 
 const addImageToEntry = async (req, res) => {
-  const { entryId } = req.params; // ID del journal asociado
-  const { imageId, filePath, dateAdded, syncDate } = req.body; // Datos adicionales del cliente
+
+  const { imageId, filePath, dateAdded, syncDate,entryId } = req.body; // Datos adicionales del cliente
   const imageFile = req.file; // Archivo de la imagen subido
 
   try {
@@ -15,15 +15,15 @@ const addImageToEntry = async (req, res) => {
       // Crear el registro de la imagen en la base de datos
       const newImage = new Image({
           journalId: entryId,
-          imageId: imageId || imageFile.filename, // Usar el imageId del cliente o el filename de Cloudinary
-          filePath: filePath || imageFile.path, // Ruta local o generada en Cloudinary
+          imageId: imageId , 
+          filePath: filePath , 
           image: {
               public_id: imageFile.filename, // ID único generado por Cloudinary
               url_image: imageFile.path      // URL completa de la imagen en Cloudinary
           },
           dateAdded: dateAdded || Date.now(), // Fecha proporcionada o la actual
           syncDate: syncDate || Date.now(),  // Fecha proporcionada o la actual
-          isDeleted: false // La imagen no está eliminada
+          isDeleted: false 
       });
 
       // Guardar en la base de datos
