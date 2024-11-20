@@ -51,6 +51,66 @@ const getJournalsByUserId = async (req, res) => {
   }
 };
 
+const updateJournalDeleteFlag = async (req, res) => {
+  const { journalId } = req.params;
+  const { isDeleted } = req.query;
+
+  try {
+    if (!journalId || isDeleted === undefined) {
+      return res.status(400).json({ message: 'Faltan datos requeridos' });
+    }
+
+    const journal = await Journal.findOneAndUpdate(
+      { journalId: journalId },
+      { isDeleted: isDeleted === 'true' }, // Convertir el string de la query a boolean
+      { new: true }
+    );
+
+    if (!journal) {
+      return res.status(404).json({ message: 'Journal no encontrado' });
+    }
+
+    res.status(200).json({ message: 'Estado de isDeleted actualizado correctamente', journal });
+  } catch (error) {
+    console.error("Error al actualizar isDeleted:", error);
+    res.status(500).json({ message: 'Error al intentar actualizar isDeleted', error: error.message });
+  }
+};
+
+const updateJournalEntry = async (req, res) => {
+  const { journalId } = req.params;
+  const { title, content, mood, date, isDraft, isDeleted } = req.body;
+
+  try {
+    if (!journalId || !title || !content || mood === undefined) {
+      return res.status(400).json({ message: 'Faltan datos requeridos' });
+    }
+
+    const updatedJournal = await Journal.findOneAndUpdate(
+      { journalId: journalId },
+      {
+        title: title,
+        content: content,
+        mood: mood,
+        date: date,
+        isDraft: isDraft || false,
+        isDeleted: isDeleted || false,
+        isEdited: false // Desmarcar el flag `isEdited`
+      },
+      { new: true } // Devuelve el documento actualizado
+    );
+
+    if (!updatedJournal) {
+      return res.status(404).json({ message: 'Journal no encontrado' });
+    }
+
+    res.status(200).json(updatedJournal);
+  } catch (error) {
+    console.error("Error al actualizar el Journal:", error);
+    res.status(500).json({ message: 'Error al intentar actualizar el Journal', error: error.message });
+  }
+};
+
 const createJournal = async (req, res) => {
   console.log("Datos recibidos:", req.body);
   const { journalId, userId, title, content, mood, date } = req.body;
@@ -93,29 +153,7 @@ const createJournal = async (req, res) => {
   }
 };
 
-const updateJournal = async (req, res) => {
-  const { userId, entryId, title, content, isEdited } = req.body;
 
-  try {
-    if (!userId || !entryId || !title || !content) {
-      return res.status(400).json({ message: 'Faltan datos requeridos' });
-    }
 
-    const journal = await Journal.findOneAndUpdate(
-      { userId: userId, entryId: entryId },
-      { title: title, content: content, isEdited: true },
-      { new: true }
-    );
-
-    if (!journal) {
-      return res.status(404).json({ message: 'Journal no encontrado o no autorizado' });
-    }
-
-    res.status(200).json(journal);
-  } catch (error) {
-    console.error("Error al actualizar el Journal:", error);
-    res.status(500).json({ message: 'Error al intentar actualizar el Journal', error: error });
-  }
-};
-
-module.exports = { getJournalsByUserId, createJournal, deleteJournal, updateJournal };
+module.exports = { getJournalsByUserId, createJournal, deleteJournal,updateJournalDeleteFlag, 
+  updateJournalEntry }

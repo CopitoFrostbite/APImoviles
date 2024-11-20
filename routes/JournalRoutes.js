@@ -7,6 +7,8 @@ const upload = require('../cloudinary/multer');
 router.get('/journals/:id', JournalController.getJournalsByUserId);
 router.post('/journal/create', upload.none(), JournalController.createJournal);
 router.put('/journal/:entryId', JournalController.deleteJournal);
-router.put('/journal/update', JournalController.updateJournal);
+
+router.put('/journals/:journalId/delete', JournalController.updateJournalDeleteFlag);
+router.put('/journals/:journalId', JournalController.updateJournalEntry);
 
 module.exports = router;
