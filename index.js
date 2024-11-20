@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', UserRoutes); 
 app.use('/api', JournalRoutes);
-app.use('/api', ImagelRoutes);  
+app.use('/api', ImageRoutes);  
 
 app.listen(port, ()=> console.log(`comenzando ${port}`));
 
