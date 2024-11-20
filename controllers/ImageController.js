@@ -64,23 +64,34 @@ const addImageToEntry = async (req, res) => {
   };
 
   const getImagesByJournalId = async (req, res) => {
-    const { journalId } = req.params; // Obtener el ID del journal desde los parámetros de la URL
+    const { journalId } = req.params;
 
     try {
-        // Buscar imágenes asociadas al journalId que no estén marcadas como eliminadas
+        // Buscar imágenes asociadas al journalId
         const images = await Image.find({ journalId, isDeleted: false });
 
         if (!images || images.length === 0) {
             return res.status(404).json({ message: 'No se encontraron imágenes para este journal' });
         }
 
-        // Responder con la lista de imágenes
-        res.status(200).json(images);
+        // Mapear los datos para que coincidan con el formato esperado por la app
+        const mappedImages = images.map(image => ({
+            imageId: image.imageId,
+            journalId: image.journalId,
+            filePath: image.filePath,
+            cloudUrl: image.cloudUrl || null,
+            dateAdded: new Date(image.dateAdded).getTime(), // Convertir a timestamp
+            isEdited: image.isEdited || false,
+            isDeleted: image.isDeleted || false,
+            syncDate: image.syncDate ? new Date(image.syncDate).getTime() : null, // Convertir a timestamp si existe
+        }));
+
+        res.status(200).json(mappedImages);
     } catch (error) {
         console.error('Error al obtener imágenes por journalId:', error);
         res.status(500).json({ message: 'Error al obtener imágenes', error: error.message });
     }
-};
+  };
 
   const markImageAsDeleted = async (req, res) => {
     const { imageId } = req.params;
