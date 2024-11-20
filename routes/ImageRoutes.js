@@ -9,5 +9,6 @@ const upload = require('../cloudinary/multer');
 router.post('/entries/:entryId/images', upload.single('image'), ImageController.addImageToEntry);
 router.delete('/image/:imageId', ImageController.deleteImage);
 router.put('/image/:imageId/delete', ImageController.markImageAsDeleted);
+router.get('/image/:journalId', ImageController.getImagesByJournalId);
 
 module.exports = router;

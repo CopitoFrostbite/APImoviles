@@ -14,16 +14,14 @@ const addImageToEntry = async (req, res) => {
 
       // Crear el registro de la imagen en la base de datos
       const newImage = new Image({
-          journalId: entryId,
           imageId: imageId , 
-          filePath: filePath , 
-          image: {
-              public_id: imageFile.filename, // ID único generado por Cloudinary
-              url_image: imageFile.path      // URL completa de la imagen en Cloudinary
-          },
+          journalId: entryId,          
+          filePath: filePath ,           
+          cloudUrl: imageFile.path ,     // URL completa de la imagen en Cloudinary          
           dateAdded: dateAdded || Date.now(), // Fecha proporcionada o la actual
+          isDeleted: false, 
           syncDate: syncDate || Date.now(),  // Fecha proporcionada o la actual
-          isDeleted: false 
+         
       });
 
       // Guardar en la base de datos
@@ -64,6 +62,25 @@ const addImageToEntry = async (req, res) => {
       res.status(500).json({ message: 'Error al subir imágenes', error: error.message });
     }
   };
+
+  const getImagesByJournalId = async (req, res) => {
+    const { journalId } = req.params; // Obtener el ID del journal desde los parámetros de la URL
+
+    try {
+        // Buscar imágenes asociadas al journalId que no estén marcadas como eliminadas
+        const images = await Image.find({ journalId, isDeleted: false });
+
+        if (!images || images.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron imágenes para este journal' });
+        }
+
+        // Responder con la lista de imágenes
+        res.status(200).json(images);
+    } catch (error) {
+        console.error('Error al obtener imágenes por journalId:', error);
+        res.status(500).json({ message: 'Error al obtener imágenes', error: error.message });
+    }
+};
 
   const markImageAsDeleted = async (req, res) => {
     const { imageId } = req.params;
@@ -116,5 +133,6 @@ const addImageToEntry = async (req, res) => {
     addImageToEntry,
     uploadJournalImages,
     deleteImage,
-    markImageAsDeleted
+    markImageAsDeleted,
+    getImagesByJournalId
   };
