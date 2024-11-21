@@ -80,7 +80,7 @@ const addImageToEntry = async (req, res) => {
             journalId: image.journalId,
             filePath: image.filePath,
             cloudUrl: image.cloudUrl || null,
-            dateAdded: image.dateAdded, 
+            dateAdded: new Date(image.dateAdded).toISOString(),
             isEdited: image.isEdited || false,
             isDeleted: image.isDeleted || false,
             syncDate: image.syncDate , 
