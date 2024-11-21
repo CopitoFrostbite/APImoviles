@@ -50,6 +50,37 @@ const User = require('../models/UserModel');
     }
   };
 
+  const updatePassword = async (req, res) => {
+    const { userId, currentPassword, newPassword } = req.body;
+
+    try {
+        // Verificar que todos los datos requeridos están presentes
+        if (!userId || !currentPassword || !newPassword) {
+            return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+
+        // Buscar el usuario en la base de datos
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Verificar si la contraseña actual coincide
+        if (user.password !== currentPassword) {
+            return res.status(401).json({ message: 'La contraseña actual es incorrecta' });
+        }
+
+        // Actualizar la contraseña
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({ message: 'Contraseña actualizada con éxito' });
+    } catch (error) {
+        console.error("Error al actualizar la contraseña:", error);
+        res.status(500).json({ message: 'Error al actualizar la contraseña', error: error.message });
+    }
+};
+
   const loginUser = async (req, res) => {
     const { email, password } = req.body;
   
@@ -193,6 +224,7 @@ const User = require('../models/UserModel');
   
   module.exports = {    
     loginUser,
+    updatePassword,
     createUser,    
     updateUserData,
     updateProfileImage,

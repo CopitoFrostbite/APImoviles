@@ -10,6 +10,7 @@ router.post('/user/register', upload.single('avatar'), (req, res, next) => {
     next();
   }, UserController.createUser);
 router.post('/user/login', UserController.loginUser);
+router.post('/user/update-password', UserController.updatePassword);
 router.put('/user/:userId/mark_deleted', UserController.markUserAsDeleted);
 router.put('/user/:id', UserController.updateUserData);
 router.put('/user/:id/profile_picture', upload.single('avatar'), (req, res, next) => {
