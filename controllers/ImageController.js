@@ -80,10 +80,10 @@ const addImageToEntry = async (req, res) => {
             journalId: image.journalId,
             filePath: image.filePath,
             cloudUrl: image.cloudUrl || null,
-            dateAdded: new Date(image.dateAdded).toISOString(),
+            dateAdded: new Date(image.dateAdded).getTime(), // Convertir a timestamp
             isEdited: image.isEdited || false,
             isDeleted: image.isDeleted || false,
-            syncDate: image.syncDate , 
+            syncDate: image.syncDate ? new Date(image.syncDate).getTime() : null,
         }));
         console.log("Received journalId:", mappedImages);
         res.status(200).json(mappedImages);
