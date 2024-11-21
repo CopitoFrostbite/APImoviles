@@ -65,7 +65,7 @@ const addImageToEntry = async (req, res) => {
 
   const getImagesByJournalId = async (req, res) => {
     const { journalId } = req.params;
-    console.log("Received journalId:", journalId);
+    
     try {
         // Buscar imágenes asociadas al journalId
         const images = await Image.find({ journalId, isDeleted: false });
@@ -80,12 +80,12 @@ const addImageToEntry = async (req, res) => {
             journalId: image.journalId,
             filePath: image.filePath,
             cloudUrl: image.cloudUrl || null,
-            dateAdded: new Date(image.dateAdded).getTime(), // Convertir a timestamp
+            dateAdded: image.dateAdded, 
             isEdited: image.isEdited || false,
             isDeleted: image.isDeleted || false,
-            syncDate: image.syncDate ? new Date(image.syncDate).getTime() : null, // Convertir a timestamp si existe
+            syncDate: image.syncDate , 
         }));
-
+        console.log("Received journalId:", mappedImages);
         res.status(200).json(mappedImages);
     } catch (error) {
         console.error('Error al obtener imágenes por journalId:', error);
